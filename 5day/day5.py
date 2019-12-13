@@ -16,32 +16,29 @@ RETURN:
     params: list of integers, containing the literal inputs to the instruction calling this function.
 """
 def get_params(tape, index, inst_len, write_param):
-    
-    params = tape[index+1:index+inst_len]
-    modes = ['0' for i in range(inst_len)]
 
-    extra = str(tape[index])[-3::-1]
+	mode_digits = str(tape[index])[-3::-1]
+	params = tape[index+1:index+inst_len]
+	modes = []
+	#print(f"mode_digits: {mode_digits}  params: {params}")
 
-    for i in range(len(extra)):
-        modes[i] = int(extra[i])
+	for i in range(inst_len-1):
+		#print (f"i: {i}  modes: {modes}")
+		if len(mode_digits) > i:
+			#print(f"mode_digits length: {len(mode_digits)}")
+			modes.append(int(mode_digits[i]))
+		else:
+			modes.append(0)
+			#print(f"modes append: {modes}")
 
-    #modes = list(str(tape[index])[-3::-1]).append(modes)
 
-    #print(f"params: {params}   modes: {modes}")
+	for i in range(len(params)):
+		if write_param != i and modes[i] == 0:
+			params[i] = tape[params[i]]
+			#print(f"i: {i}  write_p: {write_param}  params: {params}")		
 
-    print(f"{index:<4d} {tape[index:index+inst_len]}")  # TEST OUTPUT
-
-    for i in range(len(params)):
-
-        if modes[i] == '0' and write_param != i:
-            params[i] = tape[params[i]]
-
-        #print(f"- {i} {params}\t\t\t{tape}")
-
-    #print(f"     {params}")
-    #print(tape)
-
-    return params
+	#print(f"{tape}  {index}  {params}")
+	return params
 
 
 
