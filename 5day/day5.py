@@ -49,18 +49,18 @@ def instr_add(tape, index):
 
     tape[params[2]] = params[0] + params[1]
 
-    return inst_len
+    return index + inst_len
 
 
 
-def instr_multi(tape, index):
+def instr_multiply(tape, index):
     
     inst_len = 4
     params = get_params(tape, index, inst_len, 2)
 
     tape[params[2]] = params[0] * params[1]
 
-    return inst_len
+    return index + inst_len
 
 
 
@@ -81,7 +81,7 @@ def instr_input(tape, index):
         except:
             print("BAD INPUT PLEASE TRY AGAIN")
 
-    return inst_len
+    return index + inst_len
 
 
 
@@ -92,7 +92,50 @@ def instr_output(tape, index):
     
     print(f"\nSHIP OUTPUT: {params[0]}")
 
-    return inst_len
+    return index + inst_len
+
+
+
+def instr_jump_if(tape, index, if_true):
+	
+	inst_len = 3
+	params = get_params(tape, index, inst_len, -1)
+	ip = index
+
+	if (params[0] == 0) != if_true:
+		ip = params[1]
+	else:
+		ip = index + inst_len
+
+	return ip
+
+
+
+def instr_less_than(tape, index):
+	
+	inst_len = 4
+	params = get_params(tape, index, inst_len, 2)
+	
+	if params[0] < params[1]:
+		tape[params[2]] = 1
+	else:
+		tape[params[2]] = 0
+
+	return index + inst_len
+
+
+
+def instr_equals(tape, index):
+	
+	inst_len = 4
+	params = get_params(tape, index, inst_len, 2)
+	
+	if params[0] == params[1]:
+		tape[params[2]] = 1
+	else:
+		tape[params[2]] = 0
+
+	return index + inst_len
 
 
 
@@ -112,13 +155,21 @@ def execute_tape(tape):
         opcode = int(str(tape[index])[-2:]) #I love python.
 
         if opcode == 1:
-            index += instr_add(tape, index)
+            index = instr_add(tape, index)
         elif opcode == 2:
-            index += instr_multi(tape, index)
+            index = instr_multiply(tape, index)
         elif opcode == 3:
-            index += instr_input(tape, index)
+            index = instr_input(tape, index)
         elif opcode == 4:
-            index += instr_output(tape, index)
+            index = instr_output(tape, index)
+        elif opcode == 5:
+            index = instr_jump_if(tape, index, True)
+        elif opcode == 6:
+            index = instr_jump_if(tape, index, False)
+        elif opcode == 7:
+            index = instr_less_than(tape, index)
+        elif opcode == 8:
+            index = instr_equals(tape, index)
         elif opcode == 99:
             index = -1
             break
