@@ -27,4 +27,4 @@ with open(output_file, "w+") as fp:
         print("OH NO AN EXCEPTION")
         for i in comp.tape:
             fp.write(f"{i}\n")
-    """
+    #"""

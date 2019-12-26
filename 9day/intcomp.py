@@ -73,8 +73,6 @@ class IntComp:
     """
     def get_params(self, inst_len, write_param):
 
-        print(f"GP S> L: {len(self.tape)}, H: {self.head}, R: {self.rel_base},  {self.tape[self.head : self.head + inst_len]}")
-
         mode_digits = str(self.tape[self.head])[-3::-1]
         params = self.tape[self.head+1:self.head+inst_len]
         modes = []
@@ -85,22 +83,33 @@ class IntComp:
             else:
                 modes.append(0)
 
-        for i in range(len(params)):
-            
-            if modes[i] == 0:
-                self.extend_tape(params[i])
-                params[i] = self.tape[params[i]]
-            elif modes[i] == 1:
-                pass # 1 is immediate mode, meaning no need to resolve an address.
-            elif modes[i] == 2:
-                self.extend_tape(params[i])
-                params[i] = self.tape[params[i] + self.rel_base]
-            else:
-                print(f"Invalid opcode {self.tape[self.head]} at head {self.head}")
-                return Status.BAD_OPCODE
+        print(f"GP S> L: {len(self.tape)}, H: {self.head}, W: {write_param},  {self.tape[self.head : self.head + inst_len]}  M: {modes}")
 
-            if i != write_param and modes[i] != 1:
-                params[i] = self.tape[params[i]]
+        for i in range(len(params)):
+        
+            if write_param != i:
+
+                if modes[i] == 0:
+                    self.extend_tape(params[i])
+                    params[i] = self.tape[params[i]]
+                elif modes[i] == 1:
+                    pass # 1 is immediate mode, meaning no need to resolve an address.
+                elif modes[i] == 2:
+                    self.extend_tape(params[i] + self.rel_base)
+                    params[i] = self.tape[params[i] + self.rel_base]
+                else:
+                    print(f"Invalid opcode {self.tape[self.head]} at head {self.head}")
+                    return Status.BAD_OPCODE
+            else:
+
+                if modes[i] == 0:
+                    self.extend_tape(params[i])
+                if modes[i] == 1:
+                    print(f"Invalid opcode {self.tape[self.head]} at head {self.head}")
+                    return Status.BAD_OPCODE
+                if modes[i] == 2:
+                    params[i] += self.rel_base
+                    self.extend_tape(params[i])
 
         return params
 
@@ -133,7 +142,6 @@ class IntComp:
     def instr_input(self, inputs):
 
         inst_len = 2
-        print(f"GP I> len: {len(self.tape)},  rel: {self.rel_base},  {self.tape[self.head : self.head + inst_len]}")
 
         if len(inputs) == 0:
             return Status.INPUT_REQUIRED
