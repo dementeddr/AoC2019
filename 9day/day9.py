@@ -20,7 +20,7 @@ with open(output_file, "w+") as fp:
     outs = comp.execute_tape()
     print(outs)
 
-    outs = comp.execute_tape([1])
+    outs = comp.execute_tape([2])
     print(outs)
     """
     except:
