@@ -7,7 +7,7 @@ import math
 filename = "10day-input.txt"
 #output_file = "output.txt"
 broids = []
-
+field = []
 #os.remove(output_file)
 
 if len(sys.argv) > 1:
@@ -15,14 +15,15 @@ if len(sys.argv) > 1:
 
 with open(filename, "r") as fp:
 
-    i = 0
     for line in fp:
-        for j in range(len(line)):
+        field.append(line)
 
-            if line[j] == '#':
-                broids.append((i,j))
+for i in range(len(field)):
+    for j in range(len(field[i])):
 
-        i += 1
+        if field[i][j] == '#' or field[i][j] == 'O':
+            broids.append((j,i))
+
 
 max_viewable = 0
 best_candidate = (-1,-1)
@@ -33,9 +34,12 @@ for cand in broids:
 
     for ass in broids:
         x = ass[0] - cand[0]
-        y = ass[1] - cand[1]
+        y = -(ass[1] - cand[1])
 
-        angle = math.atan2(x,y) #TRIG FTW
+        if x == 0 and y == 0:
+            continue
+
+        angle = math.atan2(y,x) #TRIG FTW
 
         #print(angle)
         views.add(angle)
