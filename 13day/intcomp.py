@@ -248,6 +248,9 @@ class IntComp:
         outputs = []
         status = Status.OK
 
+        if type(inputs) is not list:
+            inputs = [inputs]
+
         """
         for i in inputs:
             if i isn't a number, return Status.NOT_A_NUM 
@@ -308,28 +311,8 @@ class IntComp:
 # end of class
 
 
+def main():
+    pass
 
-"""
-    def main():
-
-        print("READING INTCODE PROGRAM")
-
-        filename = ""
-
-        if len(sys.argv) > 1:
-            filename = sys.argv[1]
-
-        if filename == "":
-            filename = "7day-input.txt"
-
-        comp = IntComp(filename)
-
-        comp.execute_tape()
-
-        print("\nEND OF INTCODE PROGRAM\n" + str(tape))
-
-
-
-if __name__ == "__main__":
-    IntComp.main()
-"""
+if __name__ == '__main__':
+    main()
