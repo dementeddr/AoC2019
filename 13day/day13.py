@@ -138,5 +138,5 @@ while status == Status.INPUT_REQUIRED:
     print(f"ITER: {iteration:31}")
     print(f"SCORE: {score:30}\n")
     
-    time.sleep(0.01)
+    time.sleep(0.05)
     iteration += 1
