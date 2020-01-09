@@ -99,6 +99,15 @@ while status == Status.INPUT_REQUIRED:
     #if ball[0] < len(arcade[ball[1]]) - 1:
     ball_sides[1] = arcade[ball[1]][ball[0]+1]
 
+
+    if paddle < ball[0]:
+        button = 1
+    elif paddle > ball[0]:
+        button = -1
+    else:
+        button = 0
+
+    """
     #Hashtag AI
     if ball_sides[0] in [1,2]:
         button = 1
@@ -121,7 +130,7 @@ while status == Status.INPUT_REQUIRED:
         button = -1
     if iteration == 1351:
         button = 1
-
+    """
     display_arcade(arcade)
     
     outstr = f"{paddle}:{button} - {ball_sides[0]} ({ball[0]},{ball[1]}) {ball_sides[1]}"
