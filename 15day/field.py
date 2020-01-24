@@ -15,8 +15,28 @@ class coord:
 class Field:
 
     def display(self, mapping = {}):
+
+        if len(mapping) == 0:
+            for row in self.plane:
+                print(row)
+            return
+        
+        print('_')
+
         for row in self.plane:
-            print(row)
+            outstr = '|'
+
+            for val in row:
+                if val in mapping:
+                    outstr += mapping[val]
+                else:
+                    outstr += ' '
+
+            outstr += '|'
+            print(outstr)
+
+        print("=")
+
 
     def get_full(self):
         ret = self.plane
