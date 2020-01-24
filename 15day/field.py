@@ -9,6 +9,11 @@ class coord:
         self.x = x
         self.y = y
 
+    def __eq__(self, other):
+        if not isinstance(other, coord):
+            return NotImplemented
+        return (self.x == other.x and self.y == other.y)
+
 #END OF CLASS
 
 
